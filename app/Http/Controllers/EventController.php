@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
-use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -41,6 +40,14 @@ class EventController extends Controller
         $events = Event::all();
         return view('events.index', ['events' => $events]);
     }
+
+    public function dashboard()
+    {
+        $events = Event ::where('user_id', auth()->id())->get();
+        return view('dashboard', ['events' => $events]);
+    }
+
+
 
     public function show(Event $event) {
         return view('events.show', compact('event'));

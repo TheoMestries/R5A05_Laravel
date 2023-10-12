@@ -4,13 +4,10 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [EventController::class, 'index'])->name('events.index');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [EventController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::resource('events', EventController::class)->only(['index', 'create', 'store']);
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
