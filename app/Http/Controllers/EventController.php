@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EventJoinedCreator;
+use App\Mail\EventJoinedUser;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use Illuminate\Support\Facades\Mail;
 
 class EventController extends Controller
 {
@@ -126,7 +129,13 @@ class EventController extends Controller
 
     public function participate(Event $event)
     {
+        $user = auth()->user();
         auth()->user()->eventsParticipated()->attach($event);
+
+        Mail::to($user->email)->send(new EventJoinedUser($event));
+
+        Mail::to($event->user->email)->send(new EventJoinedCreator($event, $user));
+
         return back();
     }
 
