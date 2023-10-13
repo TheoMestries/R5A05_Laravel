@@ -32,7 +32,19 @@
                     Créé par : {{ $event->user->name }}
                 </div>
 
-                <!-- Vérifiez si l'utilisateur est connecté et est le créateur de l'événement -->
+                <div class="mt-4 text-right text-sm text-gray-600 dark:text-gray-400">
+                <h2 class="text-xl font-semibold mb-2">Nombre de participants : {{ $event->participants->count() }}</h2>
+                </div>
+
+                <div class="mt-4 text-right text-sm text-gray-600 dark:text-gray-400">
+                    <h2 class="text-xl font-semibold mb-2">Participants : </h2>
+                    <ul>
+                        @foreach($event->participants as $participant)
+                            <li>{{ $participant->name }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+
                 @auth
                     @if (auth()->user()->id == $event->user->id)
                         <div class="mt-4 text-center">
@@ -52,6 +64,18 @@
                         </form>
                     @endif
                 @endauth
+                @if(auth()->check() && !auth()->user()->eventsParticipated->contains($event))
+                    <form action="{{ route('events.participate', $event) }}" method="POST">
+                        @csrf
+                        <button type="submit">Je participe</button>
+                    </form>
+                @elseif(auth()->check())
+                    <form action="{{ route('events.unparticipate', $event) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Je ne participe plus</button>
+                    </form>
+                @endif
 
 
             </div>

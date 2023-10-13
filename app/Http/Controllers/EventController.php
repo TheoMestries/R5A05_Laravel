@@ -37,13 +37,13 @@ class EventController extends Controller
 
     public function index()
     {
-        $events = Event::all();
+        $events = Event::paginate(4);
         return view('events.index', ['events' => $events]);
     }
 
     public function dashboard()
     {
-        $events = Event ::where('user_id', auth()->id())->get();
+        $events = Event::where('user_id', auth()->id())->paginate(4);
         return view('dashboard', ['events' => $events]);
     }
 
@@ -122,6 +122,18 @@ class EventController extends Controller
         $event->delete();
 
         return redirect()->route('events.index')->with('success', 'Événement supprimé avec succès.');
+    }
+
+    public function participate(Event $event)
+    {
+        auth()->user()->eventsParticipated()->attach($event);
+        return back();
+    }
+
+    public function unparticipate(Event $event)
+    {
+        auth()->user()->eventsParticipated()->detach($event);
+        return back();
     }
 
 

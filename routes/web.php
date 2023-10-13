@@ -15,6 +15,8 @@ Route::get('/event/{event}', [EventController::class, 'show'])->name('event.show
 Route::get('/event/{event}/edit', [EventController::class, 'edit'])->name('event.edit');
 Route::put('/event/{event}', [EventController::class, 'update'])->name('event.update');
 Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+Route::post('/events/{event}/participate', [EventController::class, 'participate'])->name('events.participate');
+Route::delete('/events/{event}/unparticipate', [EventController::class, 'unparticipate'])->name('events.unparticipate');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

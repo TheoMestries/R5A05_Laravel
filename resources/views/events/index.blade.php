@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="relative min-h-screen bg-dots-darker  bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
-        <div class="container mx-auto p-6">
+        <div class="container mx-auto p-2">
             <h1 class="text-2xl font-bold mb-4">Liste des événements</h1>
 
             @if($events->isEmpty())
@@ -10,7 +10,7 @@
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($events as $event)
-                        <a href="{{ route('event.show', $event) }}" class=" items-center grid bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden mb-4 md:mb-0">
+                        <a href="{{ route('event.show', $event) }}" class=" items-center grid bg-white dark:bg-gray-100 rounded-lg shadow-lg overflow-hidden mb-4 md:mb-0">
                             @if($event->image)
                                 <div class="flex  justify-center" style="height: 300px; width: 300px;">
                                     <img src="{{ asset('images/' . $event->image) }}" alt="{{ $event->title }}" style="max-width: 100%; max-height: 100%;">
@@ -26,11 +26,13 @@
 
 
                     @endforeach
-                    </div>
+
+                </div>
                 @endif
             </div>
-
-
+        <div class="mt-4 flex justify-center p-6">
+            {{ $events->links('pagination::tailwind') }}
+        </div>
 
     </div>
 @endsection

@@ -25,6 +25,9 @@
                         </a>
                     @endforeach
                 </div>
+                <div class="mt-4 flex justify-center p-6">
+                    {{ $events->links('pagination::tailwind') }}
+                </div>
             @endif
         </div>
     </div>
