@@ -1,12 +1,18 @@
 <?php
 
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 
 Route::get('/', [EventController::class, 'index'])->name('events.index');
 
 Route::get('/dashboard', [EventController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/email/verify', [EmailVerificationPromptController::class])->name('verification.notice');
+Route::post('/email/verify-notification', [EmailVerificationNotificationController::class])->name('verification.send');
 
 
 Route::resource('events', EventController::class)->only(['index', 'create', 'store']);

@@ -16,7 +16,8 @@
                     </div>
                     <div>
                         <h2 class="text-xl font-semibold mb-2">Date de l'évènement</h2>
-                        <span class="text-gray-600 dark:text-gray-400">{{ \Carbon\Carbon::parse($event->date)->format('d/m/Y H:i') }}</span>
+                        <span
+                            class="text-gray-600 dark:text-gray-400">{{ \Carbon\Carbon::parse($event->date)->format('d/m/Y H:i') }}</span>
                     </div>
                 </div>
 
@@ -33,7 +34,8 @@
                 </div>
 
                 <div class="mt-4 text-right text-sm text-gray-600 dark:text-gray-400">
-                <h2 class="text-xl font-semibold mb-2">Nombre de participants : {{ $event->participants->count() }}</h2>
+                    <h2 class="text-xl font-semibold mb-2">Nombre de participants
+                        : {{ $event->participants->count() }}</h2>
                 </div>
 
                 <div class="mt-4 text-right text-sm text-gray-600 dark:text-gray-400">
@@ -48,7 +50,8 @@
                 @auth
                     @if (auth()->user()->id == $event->user->id)
                         <div class="mt-4 text-center">
-                            <a href="{{ route('event.edit', $event->id) }}" class="bg-blue-500 hover:bg-blue-600 text-black px-4 py-2 rounded shadow">
+                            <a href="{{ route('event.edit', $event->id) }}"
+                               class="bg-blue-500 hover:bg-blue-600 text-black px-4 py-2 rounded shadow">
                                 Modifier l'événement
                             </a>
                         </div>
@@ -63,20 +66,20 @@
                             <button type="submit" class="text-red-600 hover:text-red-900">Supprimer l'événement</button>
                         </form>
                     @else
-                @if(auth()->check() && !auth()->user()->eventsParticipated->contains($event))
-                    <form action="{{ route('events.participate', $event) }}" method="POST">
-                        @csrf
-                        <button type="submit">Je participe</button>
-                    </form>
-                @elseif(auth()->check())
-                    <form action="{{ route('events.unparticipate', $event) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Je ne participe plus</button>
-                    </form>
-                @endif
-
-
+                        @if(auth()->check() && !auth()->user()->eventsParticipated->contains($event))
+                            <form action="{{ route('events.participate', $event) }}" method="POST">
+                                @csrf
+                                <button type="submit">Je participe</button>
+                            </form>
+                        @elseif(auth()->check())
+                            <form action="{{ route('events.unparticipate', $event) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Je ne participe plus</button>
+                            </form>
+                        @endif
+                    @endif
+                @endauth
             </div>
         </div>
     </div>
