@@ -62,8 +62,7 @@
                             @method('DELETE')
                             <button type="submit" class="text-red-600 hover:text-red-900">Supprimer l'événement</button>
                         </form>
-                    @endif
-                @endauth
+                    @else
                 @if(auth()->check() && !auth()->user()->eventsParticipated->contains($event))
                     <form action="{{ route('events.participate', $event) }}" method="POST">
                         @csrf

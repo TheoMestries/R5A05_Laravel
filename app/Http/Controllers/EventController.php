@@ -59,9 +59,7 @@ class EventController extends Controller
 
     public function edit(Event $event)
     {
-        if (auth()->user()->id != $event->user_id) {
-            return redirect()->back()->with('error', 'Vous n\'avez pas le droit de modifier cet événement.');
-        }
+        $this->authorize('edit', $event);
 
         return view('events.edit', compact('event'));
     }
@@ -69,9 +67,8 @@ class EventController extends Controller
 
     public function update(Request $request, Event $event)
     {
-        if (auth()->user()->id != $event->user_id) {
-            return redirect()->back()->with('error', 'Vous n\'avez pas le droit de modifier cet événement.');
-        }
+        $this->authorize('update', $event);
+
 
         $data = $request->validate([
             'title' => 'required|string|max:255',
@@ -107,12 +104,8 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
-        // Vérifiez si l'utilisateur a le droit de supprimer l'événement
-        if (auth()->user()->id != $event->user_id) {
-            return redirect()->back()->with('error', 'Vous n\'avez pas le droit de supprimer cet événement.');
-        }
+        $this->authorize('delete', $event);
 
-        // Supprimez l'image de l'événement
 
         if ($event->image) {
             $path = public_path('images/' . $event->image);
@@ -122,7 +115,6 @@ class EventController extends Controller
                 dd('Le fichier n\'existe pas à cet emplacement: ' . $path);
             }
         }
-        // Supprimez l'événement
         $event->delete();
 
         return redirect()->route('events.index')->with('success', 'Événement supprimé avec succès.');
